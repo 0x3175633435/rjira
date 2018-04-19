@@ -1,6 +1,15 @@
 library('dplyr')
 library('stringr')
 
+#'
+#' getSprints
+#' 
+#' Retorna sprints pelo número de pontos concluídos
+#' 
+#' @param path Arquivo a ser carregado
+#' @examples 
+#'    getSprints('mydata.csv')
+#'
 getSprints <- function(path) {
   
   # Carrega os dados a serem analizados
