@@ -9,6 +9,7 @@ source("~/ProjectManagement/bevicred-erp/functions/getSprints.R")
 #' @seealso https://i.imgur.com/gHXYzQW.png
 #'
 sprintHistoryBarPlot <- function(){
+  
   # Busca as sprints
   sprints = getSprints("~/ProjectManagement/bevicred-erp/datasets/issues-19042018.csv")
   

@@ -1,6 +1,8 @@
 library('dplyr')
 library('stringr')
 
+source("~/ProjectManagement/bevicred-erp/functions/getFixedSprint.R")
+
 #'
 #' getSprints
 #' 
@@ -16,29 +18,10 @@ getSprints <- function(path) {
   issues <- read.csv(path)
   
   # Separa apenas as colunas que serão utilizadas
-  issues <- select(issues, points, Sprint, Sprint.1, Sprint.2, Sprint.3)
-  
-  # Cria um dataframe vazio para atualizar as informações
-  entries = NULL
+  issues <- select(issues, points, sprint, sprint.1, sprint.2, sprint.3)
   
   # Cria um novo dataset com a informação corrigida
-  by(issues, 1:nrow(issues), function(row){
-    
-    # Define o campo sprint como a sprint em que o ticket foi entregue
-    if (row$Sprint.1 != '') { row$Sprint <- row$Sprint.1; }
-    if (row$Sprint.2 != '') { row$Sprint <- row$Sprint.2; }
-    if (row$Sprint.3 != '') { row$Sprint <- row$Sprint.3; }
-    
-    # Transforma o campo sprint em numérico
-    row$Sprint <- str_replace(row$Sprint, 'Sprint ', '')
-    
-    # Adiciona linha ao dataframe apenas se a linha
-    # tiver algum peso no cálculo a ser realizado.
-    if(row$Sprint != "" && is.numeric(row$points) && !is.na(row$points) && row$points > 0) {
-      entries <<- rbind(entries, data.frame(s = row$Sprint, p = row$points))
-    }
-    
-  })
+  entries <- getFixedSprint(issues)
   
   # Apaga os issues
   issues <- NULL
