@@ -1,5 +1,6 @@
 # Carrega dependências
 library('dplyr')
+library('stringr')
 
 #'
 #' sprintPerformanceByUser
@@ -22,6 +23,11 @@ sprintPerformanceByUserLineChart <- function(p) {
   by(issues, 1:nrow(issues), function(row){
     if(row$responsavel != '' && row$sprint != ''){
        row$sprint <- strtoi(str_replace(row$sprint, 'Sprint ', ''))
+       
+       if(is.na(row$points)) {
+         row$points <- 0
+       }
+       
        entries <<- rbind(entries, row)
     }
   });
@@ -41,14 +47,16 @@ sprintPerformanceByUserLineChart <- function(p) {
   )
   
   # Transforma resultado
-  result <- reshape(result, idvar = "responsavel", timevar = "sprint", direction = "wide")
+  result <- reshape(result, idvar = "sprint", timevar = "responsavel", direction = "wide")
   
-  # Gráfico
-  matplot(rownames(result), result, type = 'l', xlab = 'Sprint', ylab = 'Points', col  = 1:11, lwd=2, lty=1)
+  # colum names
+  names <- colnames(result)
   
-  # Legenda
-  legend('bottomright', inset=.05, legend=result$responsavel, pch=1, horiz=TRUE, col=1:11)
-  
+  for(i in 2:ncol(result)){
+    performance <- result[, i]
+    worker <- str_replace(names[i], 'x.', '')
+    plot(performance, type = 'b', main = worker, xlab= 'Sprint', ylab = 'Story Points', asp = -5)
+  }
 }
   
 sprintPerformanceByUserLineChart("~/ProjectManagement/bevicred-erp/datasets/issues-19042018.csv")
