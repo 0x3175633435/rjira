@@ -10,4 +10,4 @@ This script will generat a barplot with all your collected sprints.
 
 ### sprintPerformanceByUserLineChart.R
 
-![](https://i.imgur.com/89Bg7EU.png)
+![](https://i.imgur.com/89Bg7EU.png) ![](https://i.imgur.com/xNMvVvM.png)
